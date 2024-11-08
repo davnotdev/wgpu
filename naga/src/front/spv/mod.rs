@@ -366,6 +366,8 @@ pub struct Options {
     pub adjust_coordinate_space: bool,
     /// Only allow shaders with the known set of capabilities.
     pub strict_capabilities: bool,
+    /// Allow shaders with any extensions.
+    pub allow_all_extensions: bool,
     pub block_ctx_dump_prefix: Option<PathBuf>,
 }
 
@@ -374,6 +376,7 @@ impl Default for Options {
         Options {
             adjust_coordinate_space: true,
             strict_capabilities: false,
+            allow_all_extensions: false,
             block_ctx_dump_prefix: None,
         }
     }
@@ -4618,7 +4621,11 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
             return Err(Error::InvalidOperand);
         }
         if !SUPPORTED_EXTENSIONS.contains(&name.as_str()) {
-            return Err(Error::UnsupportedExtension(name));
+            if self.options.allow_all_extensions {
+                log::warn!("Unknown capability {:?}", name);
+            } else {
+                return Err(Error::UnsupportedExtension(name));
+            }
         }
         Ok(())
     }
