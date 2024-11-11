@@ -4406,6 +4406,17 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
                             crate::Expression::FunctionArgument(i) => {
                                 fun_parameter_sampling[i as usize] |= flags;
                             }
+                            crate::Expression::Access { base, .. } => match expressions[base] {
+                                crate::Expression::GlobalVariable(handle) => {
+                                    if let Some(sampling) = self.handle_sampling.get_mut(&handle) {
+                                        *sampling |= flags
+                                    }
+                                }
+                                crate::Expression::FunctionArgument(i) => {
+                                    fun_parameter_sampling[i as usize] |= flags;
+                                }
+                                ref other => return Err(Error::InvalidGlobalVar(other.clone())),
+                            },
                             ref other => return Err(Error::InvalidGlobalVar(other.clone())),
                         }
                     }
