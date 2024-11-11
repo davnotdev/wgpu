@@ -79,6 +79,7 @@ impl Writer {
             global_variables: HandleVec::new(),
             binding_map: options.binding_map.clone(),
             saved_cached: CachedExpressions::default(),
+            function_arg_ids: crate::FastIndexMap::default(),
             gl450_ext_inst_id,
             temp_list: Vec::new(),
         })
@@ -130,6 +131,7 @@ impl Writer {
             cached_constants: take(&mut self.cached_constants).recycle(),
             global_variables: take(&mut self.global_variables).recycle(),
             saved_cached: take(&mut self.saved_cached).recycle(),
+            function_arg_ids: take(&mut self.function_arg_ids).recycle(),
             temp_list: take(&mut self.temp_list).recycle(),
         };
 
@@ -585,6 +587,7 @@ impl Writer {
             function: &mut function,
             // Re-use the cached expression table from prior functions.
             cached: std::mem::take(&mut self.saved_cached),
+            function_arg_ids: std::mem::take(&mut self.function_arg_ids),
 
             // Steal the Writer's temp list for a bit.
             temp_list: std::mem::take(&mut self.temp_list),

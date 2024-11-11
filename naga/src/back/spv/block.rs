@@ -423,8 +423,19 @@ impl<'w> BlockContext<'w> {
                         };
 
                         let binding_type_id = self.get_type_id(LookupType::Handle(binding_type));
-
                         let load_id = self.gen_id();
+
+                        // Map `binding_type_id` back to the original pointer if it is an opaque
+                        // type.
+                        match self.ir_module.types[binding_type].inner {
+                            crate::TypeInner::Image { .. }
+                            | crate::TypeInner::Sampler { .. }
+                            | crate::TypeInner::AccelerationStructure => {
+                                self.function_arg_ids.insert(load_id, result_id);
+                            }
+                            _ => {}
+                        }
+
                         block.body.push(Instruction::load(
                             binding_type_id,
                             load_id,
@@ -514,8 +525,19 @@ impl<'w> BlockContext<'w> {
                         };
 
                         let binding_type_id = self.get_type_id(LookupType::Handle(binding_type));
-
                         let load_id = self.gen_id();
+
+                        // Map `binding_type_id` back to the original pointer if it is an opaque
+                        // type.
+                        match self.ir_module.types[binding_type].inner {
+                            crate::TypeInner::Image { .. }
+                            | crate::TypeInner::Sampler { .. }
+                            | crate::TypeInner::AccelerationStructure => {
+                                self.function_arg_ids.insert(load_id, result_id);
+                            }
+                            _ => {}
+                        }
+
                         block.body.push(Instruction::load(
                             binding_type_id,
                             load_id,
@@ -2668,7 +2690,13 @@ impl<'w> BlockContext<'w> {
                     let id = self.gen_id();
                     self.temp_list.clear();
                     for &argument in arguments {
-                        self.temp_list.push(self.cached[argument]);
+                        // Check if we should use the `argument_id` directly or the pointer to it.
+                        let argument_id = self.cached[argument];
+                        let argument_id = self
+                            .function_arg_ids
+                            .get(&argument_id)
+                            .map_or(argument_id, |&pointer_id| pointer_id);
+                        self.temp_list.push(argument_id);
                     }
 
                     let type_id = match result {

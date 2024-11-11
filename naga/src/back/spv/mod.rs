@@ -493,6 +493,7 @@ impl CachedExpressions {
         self.ids.resize(length, 0);
     }
 }
+
 impl ops::Index<Handle<crate::Expression>> for CachedExpressions {
     type Output = Word;
     fn index(&self, h: Handle<crate::Expression>) -> &Word {
@@ -689,6 +690,10 @@ struct BlockContext<'w> {
     /// SPIR-V ids for expressions we've evaluated.
     cached: CachedExpressions,
 
+    /// The pointers of the cached expressions' SPIR-V ids from [`Block::Context::cached`].
+    /// Only used when loaded opaque types need to be passed to a function call.
+    function_arg_ids: crate::FastIndexMap<Word, Word>,
+
     /// The `Writer`'s temporary vector, for convenience.
     temp_list: Vec<Word>,
 
@@ -761,6 +766,11 @@ pub struct Writer {
     // Cached expressions are only meaningful within a BlockContext, but we
     // retain the table here between functions to save heap allocations.
     saved_cached: CachedExpressions,
+
+    // Maps the expression ids from `saved_cached` to the pointer id they were loaded from.
+    // Only used when opaque types need to be passed to a function call.
+    // This goes alongside `saved_cached`, so it too is only meaningful within a BlockContext.
+    function_arg_ids: crate::FastIndexMap<Word, Word>,
 
     gl450_ext_inst_id: Word,
 
