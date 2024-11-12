@@ -690,7 +690,7 @@ struct BlockContext<'w> {
     /// SPIR-V ids for expressions we've evaluated.
     cached: CachedExpressions,
 
-    /// The pointers of the cached expressions' SPIR-V ids from [`Block::Context::cached`].
+    /// The pointers of the cached expressions' SPIR-V ids from [`BlockContext::cached`].
     /// Only used when loaded opaque types need to be passed to a function call.
     function_arg_ids: crate::FastIndexMap<Word, Word>,
 
