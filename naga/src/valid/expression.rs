@@ -373,6 +373,7 @@ impl super::Validator {
                             .flags
                             .contains(TypeFlags::SIZED | TypeFlags::DATA) => {}
                     Ti::ValuePointer { .. } => {}
+                    Ti::BindingArray { .. } => {}
                     ref other => {
                         log::error!("Loading {:?}", other);
                         return Err(ExpressionError::InvalidPointerType(pointer));
@@ -1671,6 +1672,14 @@ impl super::Validator {
                 match function.expressions[base] {
                     Ex::GlobalVariable(var_handle) => {
                         let array_ty = module.global_variables[var_handle].ty;
+
+                        match module.types[array_ty].inner {
+                            crate::TypeInner::BindingArray { base, .. } => Ok(base),
+                            _ => Err(ExpressionError::ExpectedBindingArrayType(array_ty)),
+                        }
+                    }
+                    Ex::FunctionArgument(i) => {
+                        let array_ty = function.arguments[i as usize].ty;
 
                         match module.types[array_ty].inner {
                             crate::TypeInner::BindingArray { base, .. } => Ok(base),

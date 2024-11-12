@@ -264,6 +264,7 @@ impl crate::TypeInner {
             crate::TypeInner::Image { .. }
             | crate::TypeInner::Sampler { .. }
             | crate::TypeInner::AccelerationStructure { .. } => true,
+            crate::TypeInner::BindingArray { .. } => true,
             _ => false,
         }
     }

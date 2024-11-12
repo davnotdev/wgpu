@@ -444,27 +444,31 @@ impl<'a> ResolveContext<'a> {
                     space: crate::AddressSpace::Function,
                 })
             }
-            crate::Expression::Load { pointer } => match *past(pointer)?.inner_with(types) {
-                Ti::Pointer { base, space: _ } => {
-                    if let Ti::Atomic(scalar) = types[base].inner {
-                        TypeResolution::Value(Ti::Scalar(scalar))
-                    } else {
-                        TypeResolution::Handle(base)
+            crate::Expression::Load { pointer } => {
+                let past_pointer = past(pointer)?;
+                match *past_pointer.inner_with(types) {
+                    Ti::Pointer { base, space: _ } => {
+                        if let Ti::Atomic(scalar) = types[base].inner {
+                            TypeResolution::Value(Ti::Scalar(scalar))
+                        } else {
+                            TypeResolution::Handle(base)
+                        }
+                    }
+                    Ti::ValuePointer {
+                        size,
+                        scalar,
+                        space: _,
+                    } => TypeResolution::Value(match size {
+                        Some(size) => Ti::Vector { size, scalar },
+                        None => Ti::Scalar(scalar),
+                    }),
+                    Ti::BindingArray { .. } => past_pointer.clone(),
+                    ref other => {
+                        log::error!("Pointer type {:?}", other);
+                        return Err(ResolveError::InvalidPointer(pointer));
                     }
                 }
-                Ti::ValuePointer {
-                    size,
-                    scalar,
-                    space: _,
-                } => TypeResolution::Value(match size {
-                    Some(size) => Ti::Vector { size, scalar },
-                    None => Ti::Scalar(scalar),
-                }),
-                ref other => {
-                    log::error!("Pointer type {:?}", other);
-                    return Err(ResolveError::InvalidPointer(pointer));
-                }
-            },
+            }
             crate::Expression::ImageSample {
                 image,
                 gather: Some(_),

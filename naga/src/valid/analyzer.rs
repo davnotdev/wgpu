@@ -212,6 +212,7 @@ impl GlobalOrArgument {
             crate::Expression::Access { base, .. }
             | crate::Expression::AccessIndex { base, .. } => match expression_arena[base] {
                 crate::Expression::GlobalVariable(var) => GlobalOrArgument::Global(var),
+                crate::Expression::FunctionArgument(i) => GlobalOrArgument::Argument(i),
                 _ => return Err(ExpressionError::ExpectedGlobalOrArgument),
             },
             _ => return Err(ExpressionError::ExpectedGlobalOrArgument),

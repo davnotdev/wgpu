@@ -592,6 +592,12 @@ impl<I: Iterator<Item = u32>> super::Frontend<I> {
                     }
                 }
 
+                crate::Expression::FunctionArgument(i) => {
+                    match ctx.type_arena[ctx.arguments[i as usize].ty].inner {
+                        crate::TypeInner::BindingArray { base, .. } => base,
+                        _ => return Err(Error::InvalidGlobalVar(ctx.expressions[base].clone())),
+                    }
+                }
                 ref other => return Err(Error::InvalidGlobalVar(other.clone())),
             },
 
@@ -610,6 +616,9 @@ impl<I: Iterator<Item = u32>> super::Frontend<I> {
             crate::Expression::Access { base, .. } => match ctx.expressions[base] {
                 crate::Expression::GlobalVariable(handle) => {
                     *self.handle_sampling.get_mut(&handle).unwrap() |= sampling_bit;
+                }
+                crate::Expression::FunctionArgument(i) => {
+                    ctx.parameter_sampling[i as usize] |= sampling_bit;
                 }
 
                 ref other => return Err(Error::InvalidGlobalVar(other.clone())),

@@ -844,9 +844,6 @@ pub enum TypeInner {
     /// a binding array of samplers yields a [`Sampler`], indexing a pointer to the
     /// binding array of storage buffers produces a pointer to the storage struct.
     ///
-    /// Unlike textures and samplers, binding arrays are not [`ARGUMENT`], so
-    /// they cannot be passed as arguments to functions.
-    ///
     /// Naga's WGSL front end supports binding arrays with the type syntax
     /// `binding_array<T, N>`.
     ///
@@ -858,7 +855,6 @@ pub enum TypeInner {
     /// [`SamplerArray`]: https://docs.rs/wgpu/latest/wgpu/enum.BindingResource.html#variant.SamplerArray
     /// [`BufferArray`]: https://docs.rs/wgpu/latest/wgpu/enum.BindingResource.html#variant.BufferArray
     /// [`DATA`]: crate::valid::TypeFlags::DATA
-    /// [`ARGUMENT`]: crate::valid::TypeFlags::ARGUMENT
     /// [naga#1864]: https://github.com/gfx-rs/naga/issues/1864
     BindingArray { base: Handle<Type>, size: ArraySize },
 }

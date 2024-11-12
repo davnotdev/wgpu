@@ -665,10 +665,12 @@ impl super::Validator {
             }
             Ti::BindingArray { base, size } => {
                 let type_info_mask = match size {
-                    crate::ArraySize::Constant(_) => TypeFlags::SIZED | TypeFlags::HOST_SHAREABLE,
+                    crate::ArraySize::Constant(_) => {
+                        TypeFlags::SIZED | TypeFlags::HOST_SHAREABLE | TypeFlags::ARGUMENT
+                    }
                     crate::ArraySize::Dynamic => {
                         // Final type is non-sized
-                        TypeFlags::HOST_SHAREABLE
+                        TypeFlags::HOST_SHAREABLE | TypeFlags::ARGUMENT
                     }
                 };
                 let base_info = &self.types[base.index()];
