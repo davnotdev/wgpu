@@ -2504,11 +2504,11 @@ fn set_viewport(
 fn set_scissor(state: &mut State, rect: Rect<u32>) -> Result<(), RenderPassErrorInner> {
     api_log!("RenderPass::set_scissor_rect {rect:?}");
 
-    if rect.x.saturating_add(rect.w) > state.info.extent.width
-        || rect.y.saturating_add(rect.h) > state.info.extent.height
-    {
-        return Err(RenderCommandError::InvalidScissorRect(rect, state.info.extent).into());
-    }
+    // if rect.x.saturating_add(rect.w) > state.info.extent.width
+    //     || rect.y.saturating_add(rect.h) > state.info.extent.height
+    // {
+    //     return Err(RenderCommandError::InvalidScissorRect(rect, state.info.extent).into());
+    // }
     let r = hal::Rect {
         x: rect.x,
         y: rect.y,
