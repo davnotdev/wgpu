@@ -1592,6 +1592,7 @@ impl Device {
                                     base_array_layer: array_layer,
                                     array_layer_count: Some(1),
                                 },
+                                swizzle: wgt::TextureViewSwizzle::default(),
                             };
                             clear_views.push(ManuallyDrop::new(
                                 unsafe {
@@ -1941,12 +1942,15 @@ impl Device {
             array_layer_count: Some(resolved_array_layer_count),
         };
 
+        let resolved_swizzle = desc.swizzle.unwrap_or_default();
+
         let hal_desc = hal::TextureViewDescriptor {
             label: desc.label.to_hal(self.instance_flags),
             format,
             dimension: resolved_dimension,
             usage,
             range: resolved_range,
+            swizzle: resolved_swizzle,
         };
 
         let raw = unsafe { self.raw().create_texture_view(texture_raw, &hal_desc) }
