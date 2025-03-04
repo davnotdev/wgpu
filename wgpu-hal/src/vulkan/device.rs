@@ -1316,8 +1316,12 @@ impl crate::Device for super::Device {
             .flags(vk::ImageViewCreateFlags::empty())
             .image(texture.raw)
             .view_type(conv::map_view_dimension(desc.dimension))
-            .format(raw_format)
-            .subresource_range(subresource_range);
+            .format(self.shared.private_caps.map_texture_format(desc.format))
+            .subresource_range(subresource_range)
+            .components(conv::map_texture_view_swizzle_to_component_mapping(
+                desc.swizzle,
+            ));
+
         let layers =
             NonZeroU32::new(subresource_range.layer_count).expect("Unexpected zero layer count");
 

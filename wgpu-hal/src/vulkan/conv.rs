@@ -324,6 +324,30 @@ pub fn map_texture_usage_to_barrier(
     }
 }
 
+pub fn map_texture_component_swizzle_to_component(
+    component: wgt::TextureComponentSwizzle,
+) -> vk::ComponentSwizzle {
+    match component {
+        wgt::TextureComponentSwizzle::Identity => vk::ComponentSwizzle::IDENTITY,
+        wgt::TextureComponentSwizzle::Zero => vk::ComponentSwizzle::ZERO,
+        wgt::TextureComponentSwizzle::One => vk::ComponentSwizzle::ONE,
+        wgt::TextureComponentSwizzle::R => vk::ComponentSwizzle::R,
+        wgt::TextureComponentSwizzle::G => vk::ComponentSwizzle::G,
+        wgt::TextureComponentSwizzle::B => vk::ComponentSwizzle::B,
+        wgt::TextureComponentSwizzle::A => vk::ComponentSwizzle::A,
+    }
+}
+
+pub fn map_texture_view_swizzle_to_component_mapping(
+    swizzle: wgt::TextureViewSwizzle,
+) -> vk::ComponentMapping {
+    vk::ComponentMapping::default()
+        .r(map_texture_component_swizzle_to_component(swizzle.r))
+        .g(map_texture_component_swizzle_to_component(swizzle.g))
+        .b(map_texture_component_swizzle_to_component(swizzle.b))
+        .a(map_texture_component_swizzle_to_component(swizzle.a))
+}
+
 pub fn map_vk_image_usage(usage: vk::ImageUsageFlags) -> wgt::TextureUses {
     let mut bits = wgt::TextureUses::empty();
     if usage.contains(vk::ImageUsageFlags::TRANSFER_SRC) {

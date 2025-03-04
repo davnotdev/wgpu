@@ -554,6 +554,7 @@ static DIFFERENT_BGL_ORDER_BW_SHADER_AND_API: GpuTestConfiguration = GpuTestConf
             mip_level_count: None,
             base_array_layer: 0,
             array_layer_count: None,
+            swizzle: None,
         });
 
         let my_sampler = ctx

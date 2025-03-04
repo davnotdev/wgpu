@@ -1468,6 +1468,32 @@ impl TextureViewDimension {
     }
 }
 
+#[allow(missing_docs)]
+#[repr(C)]
+#[derive(Copy, Clone, Debug, Default, Hash, Eq, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub struct TextureViewSwizzle {
+    pub r: TextureComponentSwizzle,
+    pub g: TextureComponentSwizzle,
+    pub b: TextureComponentSwizzle,
+    pub a: TextureComponentSwizzle,
+}
+
+#[allow(missing_docs)]
+#[repr(C)]
+#[derive(Copy, Clone, Debug, Default, Hash, Eq, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub enum TextureComponentSwizzle {
+    #[default]
+    Identity,
+    Zero,
+    One,
+    R,
+    G,
+    B,
+    A,
+}
+
 /// Alpha blend factor.
 ///
 /// Corresponds to [WebGPU `GPUBlendFactor`](
@@ -6056,6 +6082,8 @@ pub struct TextureViewDescriptor<L> {
     /// If `Some(count)`, `base_array_layer + count` must be less or equal to the underlying array count.
     /// If `None`, considered to include the rest of the array layers, but at least 1 in total.
     pub array_layer_count: Option<u32>,
+    /// TODO: DOC
+    pub swizzle: Option<TextureViewSwizzle>,
 }
 
 /// Describes a [`Texture`](../wgpu/struct.Texture.html).

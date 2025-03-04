@@ -1927,6 +1927,8 @@ pub struct TextureViewDescriptor<'a> {
     pub dimension: wgt::TextureViewDimension,
     pub usage: wgt::TextureUses,
     pub range: wgt::ImageSubresourceRange,
+
+    pub swizzle: wgt::TextureViewSwizzle,
 }
 
 #[derive(Clone, Debug)]
