@@ -210,6 +210,7 @@ impl Surface {
                     dimension: wgt::TextureViewDimension::D2,
                     usage: wgt::TextureUses::COLOR_TARGET,
                     range: wgt::ImageSubresourceRange::default(),
+                    swizzle: wgt::TextureViewSwizzle::default(),
                 };
                 let clear_view = unsafe {
                     device

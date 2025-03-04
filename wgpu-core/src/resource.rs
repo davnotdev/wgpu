@@ -1705,6 +1705,8 @@ pub struct TextureViewDescriptor<'a> {
     pub usage: Option<wgt::TextureUsages>,
     /// Range within the texture that is accessible via this view.
     pub range: wgt::ImageSubresourceRange,
+
+    pub swizzle: Option<wgt::TextureViewSwizzle>,
 }
 
 #[derive(Debug)]
