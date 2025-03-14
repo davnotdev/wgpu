@@ -2647,7 +2647,7 @@ impl Device {
         match decl.ty {
             wgt::BindingType::Texture {
                 sample_type,
-                view_dimension,
+                view_dimension: _,
                 multisampled,
             } => {
                 use wgt::TextureSampleType as Tst;
@@ -2687,20 +2687,20 @@ impl Device {
                         })
                     }
                 }
-                if view_dimension != view.desc.dimension {
-                    return Err(Error::InvalidTextureDimension {
-                        binding,
-                        layout_dimension: view_dimension,
-                        view_dimension: view.desc.dimension,
-                    });
-                }
+                // if view_dimension != view.desc.dimension {
+                //     return Err(Error::InvalidTextureDimension {
+                //         binding,
+                //         layout_dimension: view_dimension,
+                //         view_dimension: view.desc.dimension,
+                //     });
+                // }
                 view.check_usage(wgt::TextureUsages::TEXTURE_BINDING)?;
                 Ok(wgt::TextureUses::RESOURCE)
             }
             wgt::BindingType::StorageTexture {
                 access,
                 format,
-                view_dimension,
+                view_dimension: _,
             } => {
                 if format != view.desc.format {
                     return Err(Error::InvalidStorageTextureFormat {
@@ -2709,13 +2709,13 @@ impl Device {
                         view_format: view.desc.format,
                     });
                 }
-                if view_dimension != view.desc.dimension {
-                    return Err(Error::InvalidTextureDimension {
-                        binding,
-                        layout_dimension: view_dimension,
-                        view_dimension: view.desc.dimension,
-                    });
-                }
+                // if view_dimension != view.desc.dimension {
+                //     return Err(Error::InvalidTextureDimension {
+                //         binding,
+                //         layout_dimension: view_dimension,
+                //         view_dimension: view.desc.dimension,
+                //     });
+                // }
 
                 let mip_level_count = view.selector.mips.end - view.selector.mips.start;
                 if mip_level_count != 1 {
