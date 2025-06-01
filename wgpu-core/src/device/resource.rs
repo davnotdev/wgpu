@@ -1456,7 +1456,8 @@ impl Device {
                 ));
             }
 
-            if aspects != hal::FormatAspects::from(texture.desc.format) {
+            let a = hal::FormatAspects::from(texture.desc.format);
+            if aspects != a {
                 break 'error Err(TextureViewNotRenderableReason::Aspects(aspects));
             }
 
