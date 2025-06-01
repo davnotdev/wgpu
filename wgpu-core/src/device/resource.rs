@@ -1888,9 +1888,8 @@ impl Device {
                 ));
             }
 
-            if !texture.desc.format.is_multi_planar_format()
-                && aspects != hal::FormatAspects::from(texture.desc.format)
-            {
+            let a = hal::FormatAspects::from(texture.desc.format);
+            if aspects != a && !texture.desc.format.is_multi_planar_format() {
                 break 'error Err(TextureViewNotRenderableReason::Aspects(aspects));
             }
 
