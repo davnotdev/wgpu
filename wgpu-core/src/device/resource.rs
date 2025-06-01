@@ -1456,10 +1456,10 @@ impl Device {
                 ));
             }
 
-            let a = hal::FormatAspects::from(texture.desc.format);
-            if aspects != a {
-                break 'error Err(TextureViewNotRenderableReason::Aspects(aspects));
-            }
+            // let a = hal::FormatAspects::from(texture.desc.format);
+            // if aspects != a {
+            //     break 'error Err(TextureViewNotRenderableReason::Aspects(aspects));
+            // }
 
             Ok(texture
                 .desc
