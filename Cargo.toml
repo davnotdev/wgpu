@@ -224,6 +224,11 @@ windows = { version = "0.58", default-features = false }
 # wasm32 dependencies
 console_error_panic_hook = "0.1.5"
 console_log = "1"
+# js-sys = { git = "https://github.com/davnotdev/wasm-bindgen" }
+# wasm-bindgen = { git = "https://github.com/davnotdev/wasm-bindgen" }
+# wasm-bindgen-futures = { git = "https://github.com/davnotdev/wasm-bindgen" }
+# wasm-bindgen-test = { git = "https://github.com/davnotdev/wasm-bindgen" }
+# web-sys = { git = "https://github.com/davnotdev/wasm-bindgen" }
 js-sys = { version = "0.3.77", default-features = false }
 wasm-bindgen = "0.2.100"
 wasm-bindgen-futures = "0.4.43"
@@ -249,6 +254,10 @@ ndk-sys = "0.6"
 # These overrides allow our examples to explicitly depend on release crates
 [patch.crates-io]
 wgpu = { path = "./wgpu" }
+wasm-bindgen = { git = "https://github.com/davnotdev/wasm-bindgen" }
+wasm-bindgen-macro = { git = "https://github.com/davnotdev/wasm-bindgen" }
+wasm-bindgen-macro-support = { git = "https://github.com/davnotdev/wasm-bindgen" }
+wasm-bindgen-shared = { git = "https://github.com/davnotdev/wasm-bindgen" }
 
 [profile.release]
 lto = "thin"
