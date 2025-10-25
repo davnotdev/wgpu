@@ -650,16 +650,14 @@ fn map_tagged_texture_copy_view(
     mapped
 }
 
-// NOTE: This should be cfg gated, I just don't know which one to use.
-//
-// fn map_external_texture_copy_view(
-//     view: &crate::CopyExternalImageSourceInfo,
-// ) -> webgpu_sys::GpuCopyExternalImageSourceInfo {
-//     let mapped = webgpu_sys::GpuCopyExternalImageSourceInfo::new(&view.source);
-//     mapped.set_origin(&map_origin_2d(view.origin));
-//     mapped.set_flip_y(view.flip_y);
-//     mapped
-// }
+fn map_external_texture_copy_view(
+    view: &crate::CopyExternalImageSourceInfo,
+) -> webgpu_sys::GpuCopyExternalImageSourceInfo {
+    let mapped = webgpu_sys::GpuCopyExternalImageSourceInfo::new(&view.source);
+    mapped.set_origin(&map_origin_2d(view.origin));
+    mapped.set_flip_y(view.flip_y);
+    mapped
+}
 
 fn map_texture_aspect(aspect: wgt::TextureAspect) -> webgpu_sys::GpuTextureAspect {
     match aspect {
@@ -2560,22 +2558,20 @@ impl dispatch::QueueInterface for WebQueue {
             .unwrap();
     }
 
-    // NOTE: This should be cfg gated, I just don't know which one to use.
-    //
-    // fn copy_external_image_to_texture(
-    //     &self,
-    //     source: &crate::CopyExternalImageSourceInfo,
-    //     dest: crate::CopyExternalImageDestInfo<&crate::api::Texture>,
-    //     size: crate::Extent3d,
-    // ) {
-    //     self.inner
-    //         .copy_external_image_to_texture_with_gpu_extent_3d_dict(
-    //             &map_external_texture_copy_view(source),
-    //             &map_tagged_texture_copy_view(dest),
-    //             &map_extent_3d(size),
-    //         )
-    //         .unwrap();
-    // }
+    fn copy_external_image_to_texture(
+        &self,
+        source: &crate::CopyExternalImageSourceInfo,
+        dest: crate::CopyExternalImageDestInfo<&crate::api::Texture>,
+        size: crate::Extent3d,
+    ) {
+        self.inner
+            .copy_external_image_to_texture_with_gpu_extent_3d_dict(
+                &map_external_texture_copy_view(source),
+                &map_tagged_texture_copy_view(dest),
+                &map_extent_3d(size),
+            )
+            .unwrap();
+    }
 
     fn submit(
         &self,
