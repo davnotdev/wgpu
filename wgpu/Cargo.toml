@@ -31,11 +31,6 @@ ignored = ["cfg_aliases"]
 [features]
 default = [
     "std",
-    "parking_lot",
-    "dx12",
-    "metal",
-    "gles",
-    "vulkan",
     "wgsl",
     "webgpu",
 ]
@@ -246,6 +241,13 @@ wasm-bindgen-futures = { workspace = true, optional = true }
 ##############
 [target.'cfg(target_os = "emscripten")'.dependencies]
 wgpu-core = { workspace = true, features = ["raw-window-handle"] }
+js-sys = { workspace = true, optional = true, features = ["default"] }
+wasm-bindgen = { workspace = true, optional = true }
+wasm-bindgen-futures = { workspace = true, optional = true }
+web-sys = { workspace = true, optional = true, features = [
+    "HtmlCanvasElement",
+    "OffscreenCanvas",
+] }
 wgpu-hal.workspace = true
 
 smallvec.workspace = true
