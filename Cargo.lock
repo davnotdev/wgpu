@@ -817,7 +817,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a06aeb73f470f66dcdbf7223caeebb85984942f22f1adb2a088cf9668146bbbc"
 dependencies = [
  "cfg-if",
- "wasm-bindgen",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -827,7 +827,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be8aed40e4edbf4d3b4431ab260b63fdc40f5780a4766824329ea0f1eefe3c0f"
 dependencies = [
  "log",
- "web-sys",
+ "web-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -1688,10 +1688,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "335ff9f135e4384c8150d6f27c6daed433577f86b4750418338c01a1a2528592"
 dependencies = [
  "cfg-if",
- "js-sys",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc",
  "wasi 0.11.1+wasi-snapshot-preview1",
- "wasm-bindgen",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -1744,10 +1744,10 @@ version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c5e5ea60d70410161c8bf5da3fdfeaa1c72ed2c15f8bbb9d19fe3a4fad085f08"
 dependencies = [
- "js-sys",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "slotmap",
- "wasm-bindgen",
- "web-sys",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+ "web-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -2214,7 +2214,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1cfaf33c695fc6e08064efbc1f72ec937429614f25eef83af942d0e227c3a28f"
 dependencies = [
  "once_cell",
- "wasm-bindgen",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "js-sys"
+version = "0.3.77"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
+dependencies = [
+ "once_cell",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
@@ -3196,8 +3205,8 @@ dependencies = [
  "num-traits",
  "plotters-backend",
  "plotters-svg",
- "wasm-bindgen",
- "web-sys",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+ "web-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -4480,9 +4489,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3cf4199d1e5d15ddd86a694e4d0dffa9c323ce759fea589f00fef9d81cc1931d"
 dependencies = [
  "getrandom 0.3.3",
- "js-sys",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
- "wasm-bindgen",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -4548,25 +4557,51 @@ dependencies = [
 [[package]]
 name = "wasm-bindgen"
 version = "0.2.100"
-source = "git+https://github.com/davnotdev/wasm-bindgen#9c4ff0585205053dd888374d94ace859124131b5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1edc8929d7499fc4e8f0be2262a241556cfc54a0bea223790e71446f2aab1ef5"
 dependencies = [
  "cfg-if",
  "once_cell",
  "rustversion",
- "wasm-bindgen-macro",
+ "wasm-bindgen-macro 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "wasm-bindgen"
+version = "0.2.100"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
+dependencies = [
+ "cfg-if",
+ "once_cell",
+ "rustversion",
+ "wasm-bindgen-macro 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
 name = "wasm-bindgen-backend"
 version = "0.2.100"
-source = "git+https://github.com/davnotdev/wasm-bindgen#9c4ff0585205053dd888374d94ace859124131b5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f0a0651a5c2bc21487bde11ee802ccaf4c51935d0d3d42a6101f98161700bc6"
 dependencies = [
  "bumpalo",
  "log",
  "proc-macro2",
  "quote",
  "syn",
- "wasm-bindgen-shared",
+ "wasm-bindgen-shared 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "wasm-bindgen-backend"
+version = "0.2.100"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
+dependencies = [
+ "bumpalo",
+ "log",
+ "proc-macro2",
+ "quote",
+ "syn",
+ "wasm-bindgen-shared 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
@@ -4576,37 +4611,81 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "555d470ec0bc3bb57890405e5d4322cc9ea83cebb085523ced7be4144dac1e61"
 dependencies = [
  "cfg-if",
- "js-sys",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "once_cell",
- "wasm-bindgen",
- "web-sys",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+ "web-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "wasm-bindgen-futures"
+version = "0.4.50"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
+dependencies = [
+ "cfg-if",
+ "js-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "once_cell",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "web-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
 name = "wasm-bindgen-macro"
 version = "0.2.100"
-source = "git+https://github.com/davnotdev/wasm-bindgen#9c4ff0585205053dd888374d94ace859124131b5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7fe63fc6d09ed3792bd0897b314f53de8e16568c2b3f7982f468c0bf9bd0b407"
 dependencies = [
  "quote",
- "wasm-bindgen-macro-support",
+ "wasm-bindgen-macro-support 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "wasm-bindgen-macro"
+version = "0.2.100"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
+dependencies = [
+ "quote",
+ "wasm-bindgen-macro-support 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
 name = "wasm-bindgen-macro-support"
 version = "0.2.100"
-source = "git+https://github.com/davnotdev/wasm-bindgen#9c4ff0585205053dd888374d94ace859124131b5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8ae87ea40c9f689fc23f209965b6fb8a99ad69aeeb0231408be24920604395de"
 dependencies = [
  "proc-macro2",
  "quote",
  "syn",
- "wasm-bindgen-backend",
- "wasm-bindgen-shared",
+ "wasm-bindgen-backend 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasm-bindgen-shared 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "wasm-bindgen-macro-support"
+version = "0.2.100"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+ "wasm-bindgen-backend 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "wasm-bindgen-shared 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
 name = "wasm-bindgen-shared"
 version = "0.2.100"
-source = "git+https://github.com/davnotdev/wasm-bindgen#9c4ff0585205053dd888374d94ace859124131b5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a05d73b933a847d6cccdda8f838a22ff101ad9bf93e33684f39c1f5f0eece3d"
+dependencies = [
+ "unicode-ident",
+]
+
+[[package]]
+name = "wasm-bindgen-shared"
+version = "0.2.100"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
 dependencies = [
  "unicode-ident",
 ]
@@ -4614,21 +4693,19 @@ dependencies = [
 [[package]]
 name = "wasm-bindgen-test"
 version = "0.3.50"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "66c8d5e33ca3b6d9fa3b4676d774c5778031d27a578c2b007f905acf816152c3"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
 dependencies = [
- "js-sys",
+ "js-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "minicov",
- "wasm-bindgen",
- "wasm-bindgen-futures",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "wasm-bindgen-futures 0.4.50 (git+https://github.com/davnotdev/wasm-bindgen)",
  "wasm-bindgen-test-macro",
 ]
 
 [[package]]
 name = "wasm-bindgen-test-macro"
 version = "0.3.50"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17d5042cc5fa009658f9a7333ef24291b1291a25b6382dd68862a7f3b969f69b"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4798,8 +4875,17 @@ version = "0.3.77"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "33b6dd2ef9186f1f2072e409e99cd22a975331a6b3591b12c764e0e55c60d5d2"
 dependencies = [
- "js-sys",
- "wasm-bindgen",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "web-sys"
+version = "0.3.77"
+source = "git+https://github.com/davnotdev/wasm-bindgen#821f22bbe1a775a944a3249d3f829d532fdd1187"
+dependencies = [
+ "js-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
@@ -4808,8 +4894,8 @@ version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aa30049b1c872b72c89866d458eae9f20380ab280ffd1b1e18df2d3e2d98cfe0"
 dependencies = [
- "js-sys",
- "wasm-bindgen",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -4818,8 +4904,8 @@ version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5a6580f308b1fad9207618087a65c04e7a10bc77e02c8e84e9b00dd4b12fa0bb"
 dependencies = [
- "js-sys",
- "wasm-bindgen",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -4833,7 +4919,7 @@ dependencies = [
  "cfg_aliases 0.2.1",
  "document-features",
  "hashbrown",
- "js-sys",
+ "js-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "log",
  "naga",
  "parking_lot",
@@ -4842,9 +4928,9 @@ dependencies = [
  "raw-window-handle 0.6.2",
  "smallvec",
  "static_assertions",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "wasm-bindgen-futures 0.4.50 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "web-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "wgpu-core",
  "wgpu-hal",
  "wgpu-types",
@@ -4975,10 +5061,10 @@ dependencies = [
  "obj",
  "png",
  "pollster",
- "wasm-bindgen",
- "wasm-bindgen-futures",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "wasm-bindgen-futures 0.4.50 (git+https://github.com/davnotdev/wasm-bindgen)",
  "wasm-bindgen-test",
- "web-sys",
+ "web-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "web-time 1.1.0",
  "wgpu",
  "wgpu-test",
@@ -5010,7 +5096,7 @@ dependencies = [
  "gpu-allocator",
  "gpu-descriptor",
  "hashbrown",
- "js-sys",
+ "js-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "khronos-egl",
  "libc",
  "libloading",
@@ -5032,8 +5118,8 @@ dependencies = [
  "rustc-hash",
  "smallvec",
  "thiserror 2.0.12",
- "wasm-bindgen",
- "web-sys",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "web-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "wgpu-types",
  "windows 0.58.0",
  "windows-core 0.58.0",
@@ -5082,7 +5168,7 @@ dependencies = [
  "half",
  "image",
  "itertools 0.14.0",
- "js-sys",
+ "js-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "libtest-mimic",
  "log",
  "nanorand 0.8.0",
@@ -5095,10 +5181,10 @@ dependencies = [
  "serde_json",
  "strum 0.27.1",
  "trybuild",
- "wasm-bindgen",
- "wasm-bindgen-futures",
+ "wasm-bindgen 0.2.100 (git+https://github.com/davnotdev/wasm-bindgen)",
+ "wasm-bindgen-futures 0.4.50 (git+https://github.com/davnotdev/wasm-bindgen)",
  "wasm-bindgen-test",
- "web-sys",
+ "web-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "wgpu",
  "wgpu-hal",
  "wgpu-macros",
@@ -5110,12 +5196,12 @@ version = "26.0.0"
 dependencies = [
  "bitflags 2.9.1",
  "bytemuck",
- "js-sys",
+ "js-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
  "log",
  "serde",
  "serde_json",
  "thiserror 2.0.12",
- "web-sys",
+ "web-sys 0.3.77 (git+https://github.com/davnotdev/wasm-bindgen)",
 ]
 
 [[package]]
@@ -5663,7 +5749,7 @@ dependencies = [
  "core-graphics",
  "cursor-icon",
  "icrate",
- "js-sys",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc",
  "log",
  "memmap2",
@@ -5681,13 +5767,13 @@ dependencies = [
  "smithay-client-toolkit 0.18.1",
  "smol_str",
  "unicode-segmentation",
- "wasm-bindgen",
- "wasm-bindgen-futures",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasm-bindgen-futures 0.4.50 (registry+https://github.com/rust-lang/crates.io-index)",
  "wayland-backend",
  "wayland-client",
  "wayland-protocols 0.31.2",
  "wayland-protocols-plasma 0.2.0",
- "web-sys",
+ "web-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "web-time 0.2.4",
  "windows-sys 0.48.0",
  "x11-dl",
@@ -5714,7 +5800,7 @@ dependencies = [
  "core-graphics",
  "cursor-icon",
  "dpi",
- "js-sys",
+ "js-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc",
  "memmap2",
  "ndk 0.9.0",
@@ -5733,13 +5819,13 @@ dependencies = [
  "smol_str",
  "tracing",
  "unicode-segmentation",
- "wasm-bindgen",
- "wasm-bindgen-futures",
+ "wasm-bindgen 0.2.100 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasm-bindgen-futures 0.4.50 (registry+https://github.com/rust-lang/crates.io-index)",
  "wayland-backend",
  "wayland-client",
  "wayland-protocols 0.32.8",
  "wayland-protocols-plasma 0.3.8",
- "web-sys",
+ "web-sys 0.3.77 (registry+https://github.com/rust-lang/crates.io-index)",
  "web-time 1.1.0",
  "windows-sys 0.52.0",
  "x11-dl",
