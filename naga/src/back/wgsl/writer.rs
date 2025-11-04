@@ -135,11 +135,11 @@ impl<W: Write> Writer<W> {
     }
 
     pub fn write(&mut self, module: &Module, info: &valid::ModuleInfo) -> BackendResult {
-        if !module.overrides.is_empty() {
-            return Err(Error::Unimplemented(
-                "Pipeline constants are not yet supported for this back-end".to_string(),
-            ));
-        }
+        // if !module.overrides.is_empty() {
+        //     return Err(Error::Unimplemented(
+        //         "Pipeline constants are not yet supported for this back-end".to_string(),
+        //     ));
+        // }
 
         self.reset(module);
 
@@ -1256,7 +1256,7 @@ impl<W: Write> Writer<W> {
                     |writer, expr| writer.write_expr(module, expr, func_ctx),
                 )?;
             }
-            Expression::Override(_) => unreachable!(),
+            Expression::Override(_) => unimplemented!(),
             Expression::FunctionArgument(pos) => {
                 let name_key = func_ctx.argument_key(pos);
                 let name = &self.names[&name_key];
