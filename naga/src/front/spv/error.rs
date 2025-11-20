@@ -119,6 +119,8 @@ pub enum Error {
     InvalidVectorType(Handle<crate::Type>),
     #[error("inconsistent comparison sampling {0:?}")]
     InconsistentComparisonSampling(Handle<crate::GlobalVariable>),
+    #[error("inconsistent comparison sampling for function parameter {0:?}")]
+    InconsistentFunctionParameterComparisonSampling(crate::FunctionArgument),
     #[error("wrong function result type %{0}")]
     WrongFunctionResultType(spirv::Word),
     #[error("wrong function argument type %{0}")]
