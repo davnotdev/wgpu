@@ -4705,6 +4705,7 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
         &mut self,
         handle: Option<Handle<crate::Function>>,
         fun: &mut crate::Function,
+        arena: &mut UniqueArena<crate::Type>,
     ) -> Result<(), Error> {
         // Note: this search is a bit unfortunate
         let (fun_id, mut parameters_sampling) = match handle {
@@ -4731,6 +4732,20 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
             &mut fun.expressions,
             &mut parameters_sampling,
         )?;
+
+        // The types of function parameters may need patching too! (not just global variables)
+        for (argument_idx, sampling_flags) in parameters_sampling.iter().enumerate() {
+            if *sampling_flags == image::SamplingFlags::COMPARISON {
+                let arg = &mut fun.arguments[argument_idx];
+
+                log::debug!("Flipping comparison function parameter for {arg:?}");
+                if !image::patch_comparison_type(*sampling_flags, &mut arg.ty, arena) {
+                    return Err(Error::InconsistentFunctionParameterComparisonSampling(
+                        arg.clone(),
+                    ));
+                }
+            }
+        }
 
         if let Some(lookup) = self.lookup_function.get_mut(&fun_id) {
             lookup.parameters_sampling = parameters_sampling;
@@ -4849,19 +4864,16 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
         }
         // patch all the functions
         for (handle, fun) in module.functions.iter_mut() {
-            self.patch_function(Some(handle), fun)?;
+            self.patch_function(Some(handle), fun, &mut module.types)?;
         }
         for ep in module.entry_points.iter_mut() {
-            self.patch_function(None, &mut ep.function)?;
+            self.patch_function(None, &mut ep.function, &mut module.types)?;
         }
 
         // Check all the images and samplers to have consistent comparison property.
         for (handle, flags) in self.handle_sampling.drain() {
-            if !image::patch_comparison_type(
-                flags,
-                module.global_variables.get_mut(handle),
-                &mut module.types,
-            ) {
+            let var = module.global_variables.get_mut(handle);
+            if !image::patch_comparison_type(flags, &mut var.ty, &mut module.types) {
                 return Err(Error::InconsistentComparisonSampling(handle));
             }
         }

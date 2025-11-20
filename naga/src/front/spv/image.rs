@@ -194,7 +194,7 @@ fn extract_image_coordinates(
 
 pub(super) fn patch_comparison_type(
     flags: SamplingFlags,
-    var: &mut crate::GlobalVariable,
+    var_type: &mut Handle<crate::Type>,
     arena: &mut UniqueArena<crate::Type>,
 ) -> bool {
     if !flags.contains(SamplingFlags::COMPARISON) {
@@ -204,9 +204,8 @@ pub(super) fn patch_comparison_type(
         return false;
     }
 
-    log::debug!("Flipping comparison for {var:?}");
-    let original_ty = &arena[var.ty];
-    let original_ty_span = arena.get_span(var.ty);
+    let original_ty = &arena[*var_type];
+    let original_ty_span = arena.get_span(*var_type);
     let ty_inner = match original_ty.inner {
         crate::TypeInner::Image {
             class: crate::ImageClass::Sampled { multi, .. },
@@ -222,7 +221,7 @@ pub(super) fn patch_comparison_type(
     };
 
     let name = original_ty.name.clone();
-    var.ty = arena.insert(
+    *var_type = arena.insert(
         crate::Type {
             name,
             inner: ty_inner,
