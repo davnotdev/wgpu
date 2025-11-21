@@ -216,6 +216,11 @@ pub(super) fn patch_comparison_type(
             dim,
             arrayed,
         },
+        ref ty @ crate::TypeInner::Image {
+            class: crate::ImageClass::Depth { multi: _ },
+            dim: _,
+            arrayed: _,
+        } => ty.clone(),
         crate::TypeInner::Sampler { .. } => crate::TypeInner::Sampler { comparison: true },
         ref other => unreachable!("Unexpected type for comparison mutation: {:?}", other),
     };
