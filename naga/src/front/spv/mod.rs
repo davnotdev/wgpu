@@ -3256,6 +3256,34 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
                         None
                     };
 
+                    // HACK: The typifier expects these types later,
+                    // so let's insert them manually for the modf and frexp case.
+                    match &fun {
+                        Mf::Modf => {
+                            ctx.module.generate_predeclared_type(
+                                crate::PredeclaredType::ModfResult {
+                                    size: None,
+                                    scalar: crate::Scalar {
+                                        kind: crate::ScalarKind::Float,
+                                        width: 4,
+                                    },
+                                },
+                            );
+                        }
+                        Mf::Frexp => {
+                            ctx.module.generate_predeclared_type(
+                                crate::PredeclaredType::FrexpResult {
+                                    size: None,
+                                    scalar: crate::Scalar {
+                                        kind: crate::ScalarKind::Float,
+                                        width: 4,
+                                    },
+                                },
+                            );
+                        }
+                        _ => {}
+                    }
+
                     let expr = crate::Expression::Math {
                         fun,
                         arg,
