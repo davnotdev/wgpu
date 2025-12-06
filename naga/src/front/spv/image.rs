@@ -298,7 +298,16 @@ impl<I: Iterator<Item = u32>> super::Frontend<I> {
         let coord_handle =
             self.get_expr_handle(coordinate_id, coord_lexp, ctx, emitter, block, body_idx);
         let coord_type_handle = self.lookup_type.lookup(coord_lexp.type_id)?.handle;
-        let (coordinate, array_index) = match ctx.module.types[image_ty].inner {
+
+        let inner_ty = if let crate::TypeInner::BindingArray { base, size: _ } =
+            ctx.module.types[image_ty].inner
+        {
+            base
+        } else {
+            image_ty
+        };
+
+        let (coordinate, array_index) = match ctx.module.types[inner_ty].inner {
             crate::TypeInner::Image {
                 dim,
                 arrayed,
@@ -428,7 +437,16 @@ impl<I: Iterator<Item = u32>> super::Frontend<I> {
         let coord_handle =
             self.get_expr_handle(coordinate_id, coord_lexp, ctx, emitter, block, body_idx);
         let coord_type_handle = self.lookup_type.lookup(coord_lexp.type_id)?.handle;
-        let (coordinate, array_index, is_depth) = match ctx.module.types[image_ty].inner {
+
+        let inner_ty = if let crate::TypeInner::BindingArray { base, size: _ } =
+            ctx.module.types[image_ty].inner
+        {
+            base
+        } else {
+            image_ty
+        };
+
+        let (coordinate, array_index, is_depth) = match ctx.module.types[inner_ty].inner {
             crate::TypeInner::Image {
                 dim,
                 arrayed,
@@ -745,8 +763,16 @@ impl<I: Iterator<Item = u32>> super::Frontend<I> {
             ref other => return Err(Error::InvalidGlobalVar(other.clone())),
         }
 
+        let inner_ty = if let crate::TypeInner::BindingArray { base, size: _ } =
+            ctx.module.types[image_ty].inner
+        {
+            base
+        } else {
+            image_ty
+        };
+
         let ((coordinate, array_index), depth_ref, is_depth) =
-            match ctx.module.types[image_ty].inner {
+            match ctx.module.types[inner_ty].inner {
                 crate::TypeInner::Image {
                     dim,
                     arrayed,
