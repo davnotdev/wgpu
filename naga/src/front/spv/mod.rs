@@ -6680,26 +6680,30 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
             ty = base;
         }
 
-        if let crate::TypeInner::BindingArray { .. } = module.types[original_ty].inner {
-            // Inside `parse_type_array()` we guess that an array of images or
-            // samplers must be a binding array, and here we validate that guess
-            if dec.desc_set.is_none() || dec.desc_index.is_none() {
-                return Err(Error::NonBindingArrayOfImageOrSamplers);
-            }
-        }
+        let inner_ty =
+            if let crate::TypeInner::BindingArray { base, .. } = module.types[original_ty].inner {
+                // Inside `parse_type_array()` we guess that an array of images or
+                // samplers must be a binding array, and here we validate that guess
+                if dec.desc_set.is_none() || dec.desc_index.is_none() {
+                    return Err(Error::NonBindingArrayOfImageOrSamplers);
+                }
+                base
+            } else {
+                ty
+            };
 
         if let crate::TypeInner::Image {
             dim,
             arrayed,
             class: crate::ImageClass::Storage { format, access: _ },
-        } = module.types[ty].inner
+        } = module.types[inner_ty].inner
         {
             // Storage image types in IR have to contain the access, but not in the SPIR-V.
             // The same image type in SPIR-V can be used (and has to be used) for multiple images.
             // So we copy the type out and apply the variable access decorations.
             let access = dec.flags.to_storage_access();
 
-            ty = module.types.insert(
+            let copied_ty = module.types.insert(
                 crate::Type {
                     name: None,
                     inner: crate::TypeInner::Image {
@@ -6710,6 +6714,23 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
                 },
                 Default::default(),
             );
+
+            // Well, arrays of storage images are also storage images too.
+            if let crate::TypeInner::BindingArray { base: _, size } = module.types[original_ty].inner {
+                let copied_array_ty = crate::TypeInner::BindingArray {
+                    base: copied_ty,
+                    size,
+                };
+                ty = module.types.insert(
+                    crate::Type {
+                        name: None,
+                        inner: copied_array_ty,
+                    },
+                    Default::default(),
+                );
+            } else {
+                ty = copied_ty;
+            }
         }
 
         let ext_class = match self.lookup_storage_buffer_types.get(&ty) {
