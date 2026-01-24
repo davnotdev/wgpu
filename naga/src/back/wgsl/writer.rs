@@ -1422,7 +1422,20 @@ impl<W: Write> Writer<W> {
             Expression::Override(handle) => {
                 write!(self.out, "{}", self.names[&NameKey::Override(handle)])?;
             }
-            _ => unreachable!(),
+
+            // HACK: I need the basic unary expressions too, so I will only implement those.
+            Expression::Unary { op, expr } => {
+                if let Expression::Override(left_handle) = expressions[expr] {
+                    let name = &self.names[&NameKey::Override(left_handle)];
+                    match op {
+                        crate::UnaryOperator::LogicalNot => {
+                            write!(self.out, "!{}", name)?;
+                        }
+                        ref op => unimplemented!("unimplemented {:?}", op),
+                    }
+                }
+            }
+            ref expr => unimplemented!("{:?}", expr),
         }
 
         Ok(())
