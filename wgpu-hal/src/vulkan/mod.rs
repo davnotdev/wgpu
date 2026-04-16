@@ -1325,6 +1325,19 @@ impl crate::Queue for Queue {
         // the semaphore signal/wait operations.
         let num_submissions = n.max(1);
 
+        // For serial execution: a temporary fence used to CPU-wait after each
+        // non-last submission before issuing the next one.
+        let serial_fence = if num_submissions > 1 {
+            Some(unsafe {
+                self.device
+                    .raw
+                    .create_fence(&vk::FenceCreateInfo::default(), None)
+                    .map_err(map_host_device_oom_err)?
+            })
+        } else {
+            None
+        };
+
         let mut relay = self.relay_semaphores.lock();
 
         profiling::scope!("vkQueueSubmit");
@@ -1373,7 +1386,14 @@ impl crate::Queue for Queue {
                 &mut vk_timeline_info,
             );
 
-            let fence_for_sub = if is_last { fence_raw } else { vk::Fence::null() };
+            // Non-last submissions use the serial fence so we can CPU-wait for
+            // completion before issuing the next one.  The last submission uses
+            // fence_raw (the caller's fence) as usual.
+            let fence_for_sub = if is_last {
+                fence_raw
+            } else {
+                serial_fence.unwrap()
+            };
 
             unsafe {
                 self.device
@@ -1381,6 +1401,26 @@ impl crate::Queue for Queue {
                     .queue_submit(self.raw, &[vk_info], fence_for_sub)
                     .map_err(map_host_device_oom_and_lost_err)?
             };
+
+            // Block the CPU until the GPU finishes this submission before
+            // issuing the next one, guaranteeing strictly serial execution.
+            if !is_last {
+                let sf = serial_fence.unwrap();
+                unsafe {
+                    self.device
+                        .raw
+                        .wait_for_fences(&[sf], true, u64::MAX)
+                        .map_err(map_host_device_oom_and_lost_err)?;
+                    self.device
+                        .raw
+                        .reset_fences(&[sf])
+                        .map_err(map_device_oom_err)?;
+                }
+            }
+        }
+
+        if let Some(sf) = serial_fence {
+            unsafe { self.device.raw.destroy_fence(sf, None) };
         }
 
         Ok(())
