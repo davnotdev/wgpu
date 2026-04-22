@@ -481,7 +481,6 @@ impl Binder {
         &self,
         pipeline: &T,
     ) -> Result<(), Box<BinderError>> {
-        return Ok(());
         self.manager.get_invalid().map_err(|(index, error)| {
             Box::new(match error {
                 compat::Error::Incompatible {
