@@ -184,6 +184,7 @@ async fn run_test(
                 mip_level_count: Some(1),
                 base_array_layer: layer,
                 array_layer_count: Some(1),
+                swizzle: None,
             });
             let mut rpass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: None,

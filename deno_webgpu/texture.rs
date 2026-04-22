@@ -176,6 +176,7 @@ impl GPUTexture {
         base_array_layer: descriptor.base_array_layer,
         array_layer_count: descriptor.array_layer_count,
       },
+      swizzle: None,
     };
 
     let (id, err) =
