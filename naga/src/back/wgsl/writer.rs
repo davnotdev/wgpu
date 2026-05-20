@@ -1435,6 +1435,21 @@ impl<W: Write> Writer<W> {
                     }
                 }
             }
+            // HACK: I need the basic binary expressions too, so I will only implement those.
+            Expression::Binary { op, left, right } => {
+                if let (Expression::Override(left_handle), Expression::Override(right_handle)) =
+                    (&expressions[left], &expressions[right])
+                {
+                    let left_name = self.names[&NameKey::Override(*left_handle)].clone();
+                    let right_name = self.names[&NameKey::Override(*right_handle)].clone();
+                    match op {
+                        crate::BinaryOperator::LogicalAnd => {
+                            write!(self.out, "{} && {}", left_name, right_name)?;
+                        }
+                        ref op => unimplemented!("unimplemented {:?}", op),
+                    }
+                }
+            }
             ref expr => unimplemented!("{:?}", expr),
         }
 
