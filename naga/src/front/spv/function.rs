@@ -487,19 +487,94 @@ impl<I: Iterator<Item = u32>> super::Frontend<I> {
                             }
                         }
 
-                        let member_alignment = self.layouter[result.ty].alignment;
-                        next_member_offset = member_alignment.round_up(next_member_offset);
-                        members.push(crate::StructMember {
-                            name: None,
-                            ty: result.ty,
-                            binding,
-                            offset: next_member_offset,
-                        });
-                        struct_alignment = struct_alignment.max(member_alignment);
-                        next_member_offset += self.layouter[result.ty].size;
-                        // populate just the globals first, then do `Load` in a
-                        // separate step, so that we can get a range.
-                        components.push(expr_handle);
+                        // HACK: Support array-typed outputs at a Location binding (tint does!).
+                        // Here we expand the array into individual struct members for the same
+                        // effect.
+                        let array_expansion = if let (
+                            &crate::TypeInner::Array {
+                                base,
+                                size: crate::ArraySize::Constant(count),
+                                ..
+                            },
+                            Some(&crate::Binding::Location {
+                                location,
+                                interpolation,
+                                sampling,
+                                blend_src,
+                                per_primitive,
+                            }),
+                        ) = (inner, binding.as_ref())
+                        {
+                            Some((
+                                base,
+                                count.get(),
+                                location,
+                                interpolation,
+                                sampling,
+                                blend_src,
+                                per_primitive,
+                            ))
+                        } else {
+                            None
+                        };
+
+                        if let Some((
+                            base,
+                            count,
+                            location,
+                            interpolation,
+                            sampling,
+                            blend_src,
+                            per_primitive,
+                        )) = array_expansion
+                        {
+                            for i in 0..count {
+                                let base_inner = &module.types[base].inner;
+                                let mut element_binding = crate::Binding::Location {
+                                    location: location + i,
+                                    interpolation,
+                                    sampling,
+                                    blend_src,
+                                    per_primitive,
+                                };
+                                if ep.stage == crate::ShaderStage::Vertex {
+                                    element_binding.apply_default_interpolation(base_inner);
+                                }
+
+                                let member_alignment = self.layouter[base].alignment;
+                                next_member_offset = member_alignment.round_up(next_member_offset);
+                                members.push(crate::StructMember {
+                                    name: None,
+                                    ty: base,
+                                    binding: Some(element_binding),
+                                    offset: next_member_offset,
+                                });
+                                struct_alignment = struct_alignment.max(member_alignment);
+                                next_member_offset += self.layouter[base].size;
+
+                                components.push(function.expressions.append(
+                                    crate::Expression::AccessIndex {
+                                        base: expr_handle,
+                                        index: i,
+                                    },
+                                    span,
+                                ));
+                            }
+                        } else {
+                            let member_alignment = self.layouter[result.ty].alignment;
+                            next_member_offset = member_alignment.round_up(next_member_offset);
+                            members.push(crate::StructMember {
+                                name: None,
+                                ty: result.ty,
+                                binding,
+                                offset: next_member_offset,
+                            });
+                            struct_alignment = struct_alignment.max(member_alignment);
+                            next_member_offset += self.layouter[result.ty].size;
+                            // populate just the globals first, then do `Load` in a
+                            // separate step, so that we can get a range.
+                            components.push(expr_handle);
+                        }
                     }
                 }
             }
