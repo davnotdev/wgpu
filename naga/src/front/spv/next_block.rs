@@ -112,6 +112,7 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
                 Op::NoLine => inst.expect(1)?,
                 Op::Undef => {
                     inst.expect(3)?;
+                    block.extend(emitter.finish(ctx.expressions));
                     let type_id = self.next()?;
                     let id = self.next()?;
                     let type_lookup = self.lookup_type.lookup(type_id)?;
@@ -127,6 +128,7 @@ impl<I: Iterator<Item = u32>> Frontend<I> {
                             block_id,
                         },
                     );
+                    emitter.start(ctx.expressions);
                 }
                 Op::Variable => {
                     inst.expect_at_least(4)?;
